@@ -1,0 +1,197 @@
+openapi: 3.0.0
+info:
+  version: "1.0"
+  title: "DAM Webhook API"
+  description: "Webhook API designed to receive information from the Nuxeo DAM Platform to Farfetch Platform"
+externalDocs:
+  description: "Farfetch's Confluence Solution Design Page"
+  url: https://farfetch.atlassian.net/wiki/spaces/ARCH/pages/1295687150/WIP+DAM+Solution+Design
+tags:
+  - name: "Webhook Operations"
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: "SwaggerHub API Auto Mocking"
+    url: https://virtserver.swaggerhub.com/jmtvms/DAMWebhookAPI/1.0
+paths:
+  /webhook:
+    post:
+      tags:
+        - "Webhook Operations"
+      summary: "Send a webhook to be processed by the Farfetch platform."
+      description: |
+        Each request is transformed in a event or command to the Farfetch platform.
+        _**The processing of events or commands is asynchronous**_
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/requestBody"
+      responses:
+        202:
+          description: "Accepted - The event or command was successfully queued for processing."
+        400:
+          description: "Bad Request - The request body is malformed. Please read the schemas part of this document."
+        401:
+          description: "Unauthorized - The credentials used on the request are invalid."
+        500:
+          description: "Internal Server Error - The application that receives the events or commands has an issue."
+        502:
+          description: "Bad Gateway - The location where the events or commands are stored was unreachable."
+components:
+  schemas:
+    requestBody:
+      description: "The base request body."
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - "ActivityLog"
+            - "AssetPublished"
+            - "AssetUnpublished"
+          description: "The type of command or event being send to the Farfetch platform."
+          example: "ActivityLog"
+        data:
+          oneOf:
+            - $ref: "#/components/schemas/activityLog"
+            - $ref: "#/components/schemas/assetPublication"
+          type: object
+          description: "The body of the event or command being send to the Farfetch platform."
+          example:
+            operation: "ProductionItemShootingCompleted"
+            date: "2017-07-21T17:32:28Z"
+            userId: "S-1-5-32-1045337234-12924708993-5683276719-19000"
+            workstationId:
+            productId: 23123543
+            productionItemsIds: ["5d70e701-d00d-45d8-a9bf-66753bb56b20"]
+            digitalAssetsIds: [32423432]
+      required:
+        - type
+        - data
+    activityLog:
+      description: "The activity log event."
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/operationEnum"
+        - $ref: "#/components/schemas/baseActivityLog"
+      properties:
+        digitalAssetsIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+          nullable: true
+          description: "The identification of the digital assets involved in the event."
+          example:
+            - 32423432
+        reason:
+          type: string
+          description: "If the operation is `StudioStylingQualityControlReshoot`, `StudioQualityControlReshoot` or `PhotoQualityControlReedit` this property has to contain the reason."
+          example: "Not following the guidelines"
+      required:
+        - digitalAssetsIds
+    assetPublication:
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/baseActivityLog"
+      properties:
+        tenant:
+          type: integer
+          format: int32
+          description: "The tenant where the digital asset should be published or unpublished."
+          example: 5000
+        viewOrder:
+          type: integer
+          format: int32
+          description: "The order of the asset for presentation."
+        viewType:
+          type: string
+          description: "The type of view of the asset."
+        assetType:
+          type: string
+          enum:
+            - "Image"
+            - "Video"
+          description: "The type of asset that is being published on unpublished."
+        digitalAssetId:
+          type: integer
+          format: int32
+          nullable: true
+          description: "The identification of the digital asset to be published or unpublished."
+          example: 32423432
+      required:
+        - tenant
+        - viewOrder
+        - viewType
+        - assetType
+        - digitalAssetId
+    baseActivityLog:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+          description: "The date that the event ocurred on the origin system. Use date-time notation as defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)"
+          example: "2017-07-21T17:32:28Z"
+        userId:
+          type: string
+          format: ssid
+          description: "The active directory user's security identifier."
+          example: "S-1-5-32-1045337234-12924708993-5683276719-19000"
+        workstationId:
+          type: integer
+          format: int32
+          nullable: true
+          description: "The identification of the physical workstation where the user made the action. *The property is required but it can be* `null`."
+          example: 1221
+        productId:
+          type: integer
+          format: int32
+          description: "The identification of the product involved in the event."
+          example: 23123543
+        productionItemsIds:
+          type: array
+          items:
+            type: string
+            format: uuid
+          description: "The identification of the production items involved in the event."
+          example:
+            - "5d70e701-d00d-45d8-a9bf-66753bb56b20"
+      required:
+        - date
+        - userId
+        - workstationId
+        - productId
+        - productionItemsIds
+    operationEnum:
+      description: "The possible activity log operations."
+      type: object
+      properties:
+        operation:
+          type: string
+          enum:
+            - "ShootingSessionStarted"
+            - "ProductionItemShootingStarted"
+            - "AssetTransferStarted"
+            - "AssetTransferCompleted"
+            - "ProductionItemShootingCompleted"
+            - "ShootingSessionCompleted"
+            - "AssetTransferFail"
+            - "StudioStylingQualityControlStart"
+            - "StudioStylingQualityControlFinish"
+            - "StudioStylingQualityControlReshoot"
+            - "StudioQualityControlStart"
+            - "StudioQualityControlFinish"
+            - "StudioQualityControlReshoot"
+            - "PostProductionStart"
+            - "PostProductionFinish"
+            - "PhotoQualityControlStart"
+            - "PhotoQualityControlFinish"
+            - "PhotoQualityControlReedit"
+            - "ProductionItemValidationStart"
+            - "ProductionItemValidationFinish"
+          description: "The event being send to the Farfetch platform."
+          example: "ProductionItemShootingCompleted"
+      required:
+        - operation
