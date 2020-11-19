@@ -112,7 +112,7 @@ public class ActivityLog {
 
     @JsonProperty("workstationId")
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Integer workstationId;
+    private String workstationId;
 
     @JsonProperty("productId")
     private Integer productId;
@@ -230,7 +230,7 @@ public class ActivityLog {
         this.userId = userId;
     }
 
-    public ActivityLog workstationId(Integer workstationId) {
+    public ActivityLog workstationId(String workstationId) {
         this.workstationId = workstationId;
         return this;
     }
@@ -241,15 +241,14 @@ public class ActivityLog {
      * @return workstationId
      */
     @ApiModelProperty(example = "1221", required = true, value = "The identification of the physical workstation where the user made the action. *The property is required but it can be* `null`.")
-    public Integer getWorkstationId() {
+    public String getWorkstationId() {
         return workstationId;
     }
 
-    public void setWorkstationId(Integer workstationId) {
-        if(workstationId != null) {
-            this.workstationId = workstationId;
-        } else {
-            workstationId = 0;
+    public void setWorkstationId(String workstationId) {
+        this.workstationId = workstationId;
+        if(this.workstationId == null) {
+            this.workstationId = "";
         }
     }
 

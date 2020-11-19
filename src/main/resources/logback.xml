@@ -11,7 +11,7 @@
             <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
-            <pattern>%d %-5level [%thread] %logger : %msg%n</pattern>
+            <pattern>%d %msg%n</pattern>
         </encoder>
     </appender>
     <appender name="Async-Appender" class="ch.qos.logback.classic.AsyncAppender">

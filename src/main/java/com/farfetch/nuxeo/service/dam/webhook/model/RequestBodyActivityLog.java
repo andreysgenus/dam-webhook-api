@@ -30,7 +30,13 @@ public class RequestBodyActivityLog extends RequestBody {
     }
 
     public String getInfo() {
-        return "ActivityLog request";
+        StringBuilder sb = new StringBuilder();
+        sb.append("ActivityLog event: " ).append(data.getOperation().getValue());
+        if(data.getDigitalAssetsIds() != null && data.getDigitalAssetsIds().size() > 0) {
+            sb.append(", digitalAssetsId: ").append(data.getDigitalAssetsIds().get(0));
+        }
+        sb.append( ", user: ").append(data.getUserId());
+        return sb.toString();
     }
 
     /**

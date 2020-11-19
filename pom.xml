@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.farfetch.nuxeo.service</groupId>
 	<artifactId>dam-webhook-api</artifactId>
-	<version>0.0.1</version>
+	<version>0.2.0</version>
 	<name>dam-webhook-api</name>
 	<description>"Webhook API designed to receive information from the Nuxeo DAM Platform to Farfetch Platform</description>
 

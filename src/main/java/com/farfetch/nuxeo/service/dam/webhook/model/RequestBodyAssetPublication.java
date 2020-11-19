@@ -30,7 +30,13 @@ public class RequestBodyAssetPublication extends RequestBody {
     }
 
     public String getInfo() {
-        return "AssetPublication request";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("AssetPublication type: " ).append(type);
+        sb.append(", digitalAssetsId: ").append(data.getDigitalAssetId());
+        sb.append( ", user: ").append(data.getUserId());
+        return sb.toString();
+
     }
 
     /**

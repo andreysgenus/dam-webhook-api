@@ -33,10 +33,14 @@ public interface WebhookApiDelegate {
      */
     default ResponseEntity<Void> webhookPost(RequestBody requestBody) {
         try {
+
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
             String requestStr = objectMapper.writeValueAsString(requestBody);
-            System.out.println("Request processed successfully. HTTP Response code = 202");
+
+            ApiUtil.log.info(requestBody.getInfo());
+            ApiUtil.log.info("Request processed successfully. HTTP Response code = 202");
+
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         }catch(Exception e) {
             e.printStackTrace();
