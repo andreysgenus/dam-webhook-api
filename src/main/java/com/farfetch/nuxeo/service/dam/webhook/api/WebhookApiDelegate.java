@@ -37,7 +37,7 @@ public interface WebhookApiDelegate {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
             String requestStr = objectMapper.writeValueAsString(requestBody);
-
+            ApiUtil.log.info("-------------------------------------------------------------");
             ApiUtil.log.info(requestBody.getInfo());
             ApiUtil.log.info("Request processed successfully. HTTP Response code = 202");
 
