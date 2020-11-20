@@ -26,6 +26,7 @@ public class RequestBodyActivityLog extends RequestBody {
     }
 
     public RequestBodyActivityLog(String type, ActivityLog data) {
+        this.type  = type;
         this.data = data;
     }
 

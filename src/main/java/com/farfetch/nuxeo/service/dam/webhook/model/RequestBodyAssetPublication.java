@@ -26,6 +26,7 @@ public class RequestBodyAssetPublication extends RequestBody {
     }
 
     public RequestBodyAssetPublication(String type, AssetPublication data) {
+        this.type  = type;
         this.data = data;
     }
 
