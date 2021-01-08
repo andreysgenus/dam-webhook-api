@@ -71,7 +71,16 @@ public class ActivityLog {
 
         PRODUCTIONITEMVALIDATIONSTART("ProductionItemValidationStart"),
 
-        PRODUCTIONITEMVALIDATIONFINISH("ProductionItemValidationFinish");
+        PRODUCTIONITEMVALIDATIONFINISH("ProductionItemValidationFinish"),
+
+        PRODUCTIONITEMVALIDATIONRESHOOT("ProductionItemValidationReshoot"),
+        PHOTOQUALITYCONTROLRESHOOT("PhotoQualityControlReshoot"),
+        QUALITYCONTROLOUTREEDIT("QualityControlOutReedit"),
+        STUDIOQUALITYCONTROLEXTERNALSTYLINGQC("StudioQualityControlExternalStylingQC"),
+        EXTERNALSTYLINGQCEND("ExternalStylingQCEnd"),
+        PHOTOQUALITYCONTROLEXTERNALQC("PhotoQualityControlExternalQC"),
+        EXTERNALQCEND("ExternalQCEnd")
+        ;
 
 
         private String value;
