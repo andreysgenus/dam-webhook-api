@@ -62,6 +62,10 @@ public class AssetPublication extends BaseActivityLog  {
   @JsonProperty("digitalAssetId")
   private Integer digitalAssetId;
 
+  @JsonProperty("externalDigitalAssetId")
+  private String externalDigitalAssetId;
+
+
   public AssetPublication tenant(Integer tenant) {
     this.tenant = tenant;
     return this;
@@ -145,6 +149,11 @@ public class AssetPublication extends BaseActivityLog  {
     return this;
   }
 
+  public AssetPublication externalDigitalAssetId(String externalDigitalAssetId) {
+        this.externalDigitalAssetId = externalDigitalAssetId;
+        return this;
+  }
+
   /**
    * The identification of the digital asset to be published or unpublished.
    * @return digitalAssetId
@@ -159,8 +168,16 @@ public class AssetPublication extends BaseActivityLog  {
     this.digitalAssetId = digitalAssetId;
   }
 
+    @ApiModelProperty(example = "32423432", required = true, value = "The identification of the digital asset to be published or unpublished.")
+    public String getExternalDigitalAssetId() {
+        return externalDigitalAssetId;
+    }
 
-  @Override
+    public void setExternalDigitalAssetId(String externalDigitalAssetId) {
+        this.externalDigitalAssetId = externalDigitalAssetId;
+    }
+
+    @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
