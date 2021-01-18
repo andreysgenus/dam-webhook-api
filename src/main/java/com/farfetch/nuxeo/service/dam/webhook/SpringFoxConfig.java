@@ -24,8 +24,9 @@ public class SpringFoxConfig {
                 //.apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
-                .securityContexts(Arrays.asList(actuatorSecurityContext()))
-                .securitySchemes(Arrays.asList(new BasicAuth("basicAuth")));
+                //.securityContexts(Arrays.asList(actuatorSecurityContext()))
+               //.securitySchemes(Arrays.asList(new BasicAuth("basicAuth")))
+                ;
     }
 
     private SecurityContext actuatorSecurityContext() {
